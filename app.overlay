@@ -1,0 +1,72 @@
+/*
+ * Board overlay for the BK6LS cadence sensor (built as nrf52dk/nrf52810).
+ * Pinout from reverse engineering (see HARDWARE.md):
+ *   I2C: SCL=P0.30, SDA=P0.28 ; accelerometer @ 0x4C
+ *   LEDs (active-low): BLUE=P0.16, RED=P0.18
+ *   Accel INT candidates: P0.15, P0.25
+ *   Battery: SAADC internal VDD (no external pin)
+ */
+#include <zephyr/dt-bindings/adc/adc.h>
+#include <zephyr/dt-bindings/adc/nrf-saadc.h>
+
+&pinctrl {
+	i2c0_default: i2c0_default {
+		group1 {
+			psels = <NRF_PSEL(TWIM_SDA, 0, 28)>,
+				<NRF_PSEL(TWIM_SCL, 0, 30)>;
+		};
+	};
+
+	i2c0_sleep: i2c0_sleep {
+		group1 {
+			psels = <NRF_PSEL(TWIM_SDA, 0, 28)>,
+				<NRF_PSEL(TWIM_SCL, 0, 30)>;
+			low-power-enable;
+		};
+	};
+};
+
+&i2c0 {
+	/* accelerometer @ 0x4C accessed via the i2c API directly (no Zephyr driver) */
+	compatible = "nordic,nrf-twim";
+	status = "okay";
+	clock-frequency = <100000>;
+};
+
+/ {
+	leds_bk6ls {
+		compatible = "gpio-leds";
+		led_blue: led_blue {
+			gpios = <&gpio0 16 GPIO_ACTIVE_LOW>;
+			label = "BLUE";
+		};
+		led_red: led_red {
+			gpios = <&gpio0 18 GPIO_ACTIVE_LOW>;
+			label = "RED";
+		};
+	};
+
+	aliases {
+		led-blue = &led_blue;
+		led-red = &led_red;
+	};
+
+	zephyr,user {
+		io-channels = <&adc 0>;
+	};
+};
+
+&adc {
+	status = "okay";
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	channel@0 {
+		reg = <0>;
+		zephyr,gain = "ADC_GAIN_1_6";
+		zephyr,reference = "ADC_REF_INTERNAL";
+		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
+		zephyr,input-positive = <NRF_SAADC_VDD>;
+		zephyr,resolution = <12>;
+	};
+};

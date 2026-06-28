@@ -1,0 +1,12 @@
+# Zephyr/west build output
+/build/
+build/
+
+# Claude Code internal
+.claude/
+
+# Editor/OS
+*.swp
+*~
+.DS_Store
+Thumbs.db
