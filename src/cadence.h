@@ -22,7 +22,7 @@ void cadence_init(enum cadence_plane plane);
 /* Feed a new accel sample taken dt_ms after the previous one. */
 void cadence_update(int16_t x, int16_t y, int16_t z, uint32_t dt_ms);
 
-/* Call every 100 ms to update the windowed RPM estimate. */
+/* Call every 100 ms to sample the tracker's velocity into the reported RPM. */
 void cadence_tick_100ms(void);
 
 /* Resume after a low-power sleep: keep cumulative revs but drop the stale

@@ -170,6 +170,15 @@ int main(void)
 			uint32_t dt = (uint32_t)(now - t_prev);
 
 			t_prev = now;
+
+			/* Self-heal advertising: restarting adv straight from the
+			 * disconnected callback can fail with -ENOMEM (the conn object
+			 * isn't freed yet), which would leave us silent until sleep.
+			 * Retry here until it takes. adv_start() no-ops if already on. */
+			if (!s_connected && !s_advertising) {
+				adv_start();
+			}
+
 			if (accel_read_xyz(&x, &y, &z) == 0) {
 				cadence_update(x, y, z, dt);
 			}
