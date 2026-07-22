@@ -15,7 +15,7 @@ if (-not $NoBuild) {
 }
 
 # Hex location differs between sysbuild and classic builds — take the first that exists.
-$hex = @("build\merged.hex", "build\zephyr\zephyr.hex", "build\cadence_ebike\zephyr\zephyr.hex") |
+$hex = @("build\merged.hex", "build\zephyr\zephyr.hex", "build\cadence-for-ebike\zephyr\zephyr.hex") |
     ForEach-Object { Join-Path $root $_ } | Where-Object { Test-Path $_ } | Select-Object -First 1
 if (-not $hex) { throw "no built hex found under build\ — run without -NoBuild" }
 

@@ -48,11 +48,20 @@ The chip is the constrained nRF52810 (24 KB RAM / 192 KB flash), so
 
 ## Building
 
-Builds are done in the NCS v3.2.4 toolchain environment (Windows; see
-[`scripts/ncs-env.ps1`](scripts/ncs-env.ps1)):
+Builds run in the NCS v3.2.4 toolchain environment.
+
+**Windows** (toolchain in `C:\ncs`; see [`scripts/ncs-env.ps1`](scripts/ncs-env.ps1)):
 
 ```powershell
 . .\scripts\ncs-env.ps1
+west build -b nrf52dk/nrf52810 .
+```
+
+**macOS** (west workspace in `~/ncs`, Zephyr SDK 0.17.4 in `~/zephyr-sdk-0.17.4`,
+python venv in `~/ncs-venv`; see [`scripts/ncs-env.sh`](scripts/ncs-env.sh)):
+
+```sh
+. ./scripts/ncs-env.sh
 west build -b nrf52dk/nrf52810 .
 ```
 
@@ -74,6 +83,11 @@ Prebuilt firmware images live in [`release/`](release/). To produce one:
 .\scripts\make-release.ps1              # builds and copies the hex into release/
 .\scripts\make-release.ps1 -Version 1.0.0
 .\scripts\make-release.ps1 -NoBuild     # package an existing build/ output
+```
+
+```sh
+./scripts/make-release.sh               # macOS equivalent
+./scripts/make-release.sh -v 1.0.0 -n   # -v version, -n = no rebuild
 ```
 
 The script does a pristine `west build`, copies the hex to

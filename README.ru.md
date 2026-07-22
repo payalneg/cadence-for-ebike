@@ -50,11 +50,20 @@
 
 ## Сборка
 
-Сборка выполняется в окружении тулчейна NCS v3.2.4 (Windows; см.
-[`scripts/ncs-env.ps1`](scripts/ncs-env.ps1)):
+Сборка выполняется в окружении тулчейна NCS v3.2.4.
+
+**Windows** (тулчейн в `C:\ncs`; см. [`scripts/ncs-env.ps1`](scripts/ncs-env.ps1)):
 
 ```powershell
 . .\scripts\ncs-env.ps1
+west build -b nrf52dk/nrf52810 .
+```
+
+**macOS** (west-workspace в `~/ncs`, Zephyr SDK 0.17.4 в `~/zephyr-sdk-0.17.4`,
+python-venv в `~/ncs-venv`; см. [`scripts/ncs-env.sh`](scripts/ncs-env.sh)):
+
+```sh
+. ./scripts/ncs-env.sh
 west build -b nrf52dk/nrf52810 .
 ```
 
@@ -76,6 +85,11 @@ nrfjprog --family NRF52 --program release\bk6ls-cadence-<version>.hex --chiperas
 .\scripts\make-release.ps1              # собирает и кладёт hex в release/
 .\scripts\make-release.ps1 -Version 1.0.0
 .\scripts\make-release.ps1 -NoBuild     # упаковать уже собранный build/
+```
+
+```sh
+./scripts/make-release.sh               # то же самое на macOS
+./scripts/make-release.sh -v 1.0.0 -n   # -v версия, -n = без пересборки
 ```
 
 Скрипт делает чистую сборку `west build`, копирует hex в

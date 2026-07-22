@@ -1,0 +1,7 @@
+BK6LS-Cadence firmware release
+version : v1.0.0
+date    : 2026-07-22 17:13
+commit  : 35be12d217bcf08f11855b45b533be9cba4e4e44
+source  : /Users/alexey/work/my/cadence-for-ebike/build/merged.hex
+sha256  : 88dd211a86a18b8dcc71538d01112e818c5f5a3369afa63ba02e8ff001644837
+flash   : nrfjprog --family NRF52 --program bk6ls-cadence-v1.0.0.hex --chiperase --verify --reset
